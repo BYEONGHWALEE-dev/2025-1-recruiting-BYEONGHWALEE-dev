@@ -1,6 +1,7 @@
 package com.yourssu.application.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,13 +16,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(nullable = false, length = 70)
+    @Column(name = "password", nullable = false, length = 70)
     private String password;
 
-    @Column(nullable = false)
+    @Email(message = "옳바른 이메일 양식이 아닙니다.")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "user",
@@ -34,18 +36,27 @@ public class User {
                 cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    // constructors
+    public User() {}
 
-    void addArticle(Article article) {
+    public User(String email, String password, String username) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
+
+    public void addArticle(Article article) {
         if(this.articles == null){
             this.articles = new ArrayList<>();
         }
         this.articles.add(article);
     }
 
-    void addComment(Comment comment) {
+    public void addComment(Comment comment) {
         if(this.comments == null){
             this.comments = new ArrayList<>();
         }
         this.comments.add(comment);
     }
+
 }
