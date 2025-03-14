@@ -3,11 +3,11 @@ package com.yourssu.application.exceptionhandling;
 public class UserErrorResponse {
 
     private long timestamp;
-    private String status;
+    private int status;
     private String message;
     private String requestURL;
 
-    public UserErrorResponse(long timestamp, String status, String message, String requestURL) {
+    public UserErrorResponse(long timestamp, int status, String message, String requestURL) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
@@ -22,11 +22,11 @@ public class UserErrorResponse {
         this.timestamp = timestamp;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

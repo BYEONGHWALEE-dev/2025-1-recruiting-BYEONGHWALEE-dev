@@ -3,11 +3,15 @@ package com.yourssu.application.service;
 import com.yourssu.application.dao.ArticleRepository;
 import com.yourssu.application.dao.CommentRepository;
 import com.yourssu.application.dao.UserRepository;
+import com.yourssu.application.dto.ArticleResponseDTO;
+import com.yourssu.application.dto.UserDTO;
 import com.yourssu.application.entity.Article;
 import com.yourssu.application.entity.Comment;
 import com.yourssu.application.entity.User;
+import com.yourssu.application.exceptionhandling.UserNotFoundException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.AbstractDocument;
@@ -30,6 +34,9 @@ public class AppServiceImpl implements AppService{
     @Override
     public User getUser(String email) {
         User theUser = userRepository.findByEmail(email);
+        if (theUser == null) {
+            throw new UserNotFoundException("사용자 정보가 일치하지 않습니다.");
+        }
         return theUser;
     }
 
@@ -44,27 +51,22 @@ public class AppServiceImpl implements AppService{
     // 회원가입
     @Transactional
     @Override
-    public User registerUser(String email, String password, String username) {
-        User theUser = new User(email, password, username);
+    public UserDTO registerUser(User theUser) {
         userRepository.save(theUser);
-
-        return theUser;
-    }
-
-    @Transactional
-    @Override
-    public User registerUser(User theUser) {
-        userRepository.save(theUser);
-        return theUser;
+        return new UserDTO(theUser.getEmail(), theUser.getUsername());
     }
 
     // 게시글 작성
     @Transactional
     @Override
-    public void saveArticle(String email, String title, String content) {
+    public ArticleResponseDTO saveArticle(User theUser, String title, String content) {
+
         Article theArticle = new Article(title, content);
-        getUser(email).addArticle(theArticle);
+        theUser.addArticle(theArticle);
+        theArticle.setUser(theUser);
         articleRepository.save(theArticle);
+
+        return new ArticleResponseDTO(theArticle.getArticleId(), theUser.getEmail(), title, content);
     }
 
     // 댓글 작성

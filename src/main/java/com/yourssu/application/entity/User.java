@@ -59,4 +59,8 @@ public class User {
         this.comments.add(comment);
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

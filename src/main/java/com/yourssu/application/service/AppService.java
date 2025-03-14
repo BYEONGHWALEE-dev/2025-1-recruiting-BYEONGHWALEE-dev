@@ -1,8 +1,9 @@
 package com.yourssu.application.service;
 
+import com.yourssu.application.dto.ArticleResponseDTO;
+import com.yourssu.application.dto.UserDTO;
 import com.yourssu.application.entity.Article;
 import com.yourssu.application.entity.User;
-import org.springframework.stereotype.Service;
 
 public interface AppService {
 
@@ -15,12 +16,10 @@ public interface AppService {
 
     // save 함수
     // 회원가입
-    User registerUser(String username, String password, String email);
-
-    User registerUser(User theUser);
+    UserDTO registerUser(User theUser);
 
     // 게시글 작성
-    void saveArticle(String email, String title, String content);
+    ArticleResponseDTO saveArticle(User thUser, String title, String content);
 
     // 댓글 작성
     void saveComment(String email, String content);
