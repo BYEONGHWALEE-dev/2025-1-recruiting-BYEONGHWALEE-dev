@@ -1,4 +1,4 @@
-package com.yourssu.application.dto;
+package com.yourssu.application.dto.articledto;
 
 import lombok.Getter;
 import lombok.Setter;

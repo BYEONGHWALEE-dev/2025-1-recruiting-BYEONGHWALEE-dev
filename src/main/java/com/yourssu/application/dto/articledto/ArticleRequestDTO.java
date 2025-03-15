@@ -1,6 +1,5 @@
-package com.yourssu.application.dto;
+package com.yourssu.application.dto.articledto;
 
-import com.yourssu.application.entity.Article;
 import lombok.Getter;
 import lombok.Setter;
 

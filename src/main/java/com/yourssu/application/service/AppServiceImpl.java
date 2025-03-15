@@ -3,18 +3,17 @@ package com.yourssu.application.service;
 import com.yourssu.application.dao.ArticleRepository;
 import com.yourssu.application.dao.CommentRepository;
 import com.yourssu.application.dao.UserRepository;
-import com.yourssu.application.dto.ArticleResponseDTO;
-import com.yourssu.application.dto.UserDTO;
+import com.yourssu.application.dto.articledto.ArticleResponseDTO;
+import com.yourssu.application.dto.userdto.UserDTO;
+import com.yourssu.application.dto.commentdto.CommentResponseDTO;
 import com.yourssu.application.entity.Article;
 import com.yourssu.application.entity.Comment;
 import com.yourssu.application.entity.User;
 import com.yourssu.application.exceptionhandling.UserNotFoundException;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.AbstractDocument;
+import java.util.Optional;
 
 @Service
 public class AppServiceImpl implements AppService{
@@ -41,9 +40,21 @@ public class AppServiceImpl implements AppService{
     }
 
     @Override
-    public Article getArticle(String title) {
-        Article theArticle = articleRepository.findByTitle(title);
-        return theArticle;
+    public Article getArticleById(int articleId) {
+        Optional<Article> theArticle = articleRepository.findById(articleId);
+        if(theArticle.isEmpty()) {
+            throw new RuntimeException("게시물이 없습니다.");
+        }
+        return theArticle.get();
+    }
+
+    @Override
+    public Comment getCommentById(int commentId) {
+        Optional<Comment> theComment = commentRepository.findById(commentId);
+        if(theComment.isEmpty()) {
+            throw new RuntimeException("댓글이 없습니다.");
+        }
+        return theComment.get();
     }
 
 
@@ -72,19 +83,77 @@ public class AppServiceImpl implements AppService{
     // 댓글 작성
     @Transactional
     @Override
-    public void saveComment(String email, String content) {
+    public CommentResponseDTO saveComment(Article theArticle, String email, String content) {
         User theUser = getUser(email);
-        Comment theComment = new Comment(content);
-        theUser.addComment(theComment);
+        Comment theComment = new Comment(content, theUser, theArticle);
+
+        theComment.setArticle(theArticle);
+        theComment.setUser(theUser);
 
         commentRepository.save(theComment);
+
+        return new CommentResponseDTO(theComment.getCommentId(), email, content);
     }
 
-    //merge 함수
+    // merge 함수
+    // 게시글 수정
     @Transactional
     @Override
-    public void mergeArticle(String title) {
+    public ArticleResponseDTO mergeArticle(User theUser, int articleId, String theTitle, String theContent) {
+        Article theArticle = getArticleById(articleId);
 
+        theArticle.setTitle(theTitle);
+        theArticle.setContent(theContent);
+        articleRepository.save(theArticle);
+
+        return new ArticleResponseDTO(theArticle.getArticleId(), theUser.getEmail(), theTitle, theContent);
+    }
+
+    @Transactional
+    @Override
+    public CommentResponseDTO updateComment(User theUser, int commentId, String theContent) {
+        Comment theComment = getCommentById(commentId);
+
+        theComment.setContent(theContent);
+        commentRepository.save(theComment);
+
+        return new CommentResponseDTO(commentId, theUser.getEmail(), theContent);
+    }
+
+    // delete 함수
+    // Article 삭제
+    @Transactional
+    @Override
+    public Article deleteArticle(int articleId, User theUser) {
+        Article theArticle = getArticleById(articleId);
+        // 연관성 끊기
+        theUser.getArticles().remove(theArticle);
+
+        articleRepository.delete(theArticle);
+        return theArticle;
+    }
+
+    // comment 삭제
+    @Transactional
+    @Override
+    public Comment deleteComment(int commentId, User theUser, Article theArticle) {
+        Comment theComment = getCommentById(commentId);
+
+        // 연관성 끊기
+        theUser.getComments().remove(theComment);
+        theArticle.getComments().remove(theComment);
+
+        commentRepository.delete(theComment);
+        return theComment;
+    }
+
+
+    // 유저 삭제
+    @Transactional
+    @Override
+    public User quitUser(User theUser) {
+        userRepository.delete(theUser);
+        return theUser;
     }
 
 }

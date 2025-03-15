@@ -35,4 +35,13 @@ public class Comment {
     public Comment(String content) {
         this.content = content;
     }
+
+    public Comment(String content, User user, Article article) {
+        this.content = content;
+        this.user = user;
+        this.article = article;
+
+        user.addComment(this);
+        article.addComment(this);
+    }
 }

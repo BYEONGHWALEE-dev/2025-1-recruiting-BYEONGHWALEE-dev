@@ -1,6 +1,5 @@
-package com.yourssu.application.dto;
+package com.yourssu.application.dto.userdto;
 
-import com.yourssu.application.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

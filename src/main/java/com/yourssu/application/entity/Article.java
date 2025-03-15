@@ -19,11 +19,11 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int articleId;
 
-    @NotBlank // "", " ", "NULL" 값을 방지하기 위함
+    @NotBlank(message = "빈칸입니다. 다시 입력하세요.") // "", " ", "NULL" 값을 방지하기 위함
     @Column(nullable = false)
     private String title;
 
-    @NotBlank // "", " ", "NULL" 값을 방지하기 위함
+    @NotBlank(message = "빈칸입니다. 다시 입력하세요.") // "", " ", "NULL" 값을 방지하기 위함
     @Column(nullable = false)
     private String content;
 
@@ -45,7 +45,7 @@ public class Article {
         this.content = content;
     }
 
-    void addComment(Comment comment) {
+    public void addComment(Comment comment) {
         if (this.comments == null) {
             this.comments = new ArrayList<>();
         }
