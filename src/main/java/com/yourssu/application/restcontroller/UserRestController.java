@@ -49,4 +49,6 @@ public class UserRestController {
 
         return theUser.getEmail() + " 님이 탈퇴하였습니다.";
     }
+
+
 }

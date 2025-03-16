@@ -15,7 +15,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
 
-    @NotBlank // "", " ", "NULL" 값을 방지하기 위함
+    @NotBlank(message = "빈간입니다. 다시 입력하세요.") // "", " ", "NULL" 값을 방지하기 위함
     @Column(nullable = false)
     private String content;
 
