@@ -63,5 +63,7 @@ public class ArticleControllerTest {
 
         // 예외 메시지가 맞는지 확인
         assertEquals("게시글을 찾을 수 없습니다.", exception.getMessage());
+
+        // 이메일 비번 확인은 앞의 usertestcode에서 완성했기 때문에 따로 하지 않음
     }
 }
