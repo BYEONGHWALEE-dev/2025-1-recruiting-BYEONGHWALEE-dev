@@ -119,6 +119,6 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.message").value("댓글을 삭제할 수 없습니다."));
 
 
-        // 이메일 비번 확인은 앞의 usertestcode에서 완성했기 때문에 따로 하지 않음
+
     }
 }

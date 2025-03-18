@@ -7,6 +7,7 @@ import com.yourssu.application.entity.Article;
 import com.yourssu.application.entity.User;
 import com.yourssu.application.exceptionhandling.UserNotFoundException;
 import com.yourssu.application.service.AppService;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,7 @@ public class ArticleController {
         // 2. 비밀번호 검증(컨트롤러에서 처리)
         String thePassword = articleRequestDTO.getPassword();
         matchPassword(theUser, thePassword);
+
 
         return appService.saveArticle(theUser, theTitle, theContent);
     }

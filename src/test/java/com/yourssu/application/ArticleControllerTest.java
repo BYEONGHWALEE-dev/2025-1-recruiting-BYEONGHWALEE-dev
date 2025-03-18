@@ -1,10 +1,13 @@
 package com.yourssu.application;
 
+import com.google.gson.Gson;
+import com.yourssu.application.dto.articledto.ArticleRequestDTO;
 import com.yourssu.application.entity.Article;
 import com.yourssu.application.entity.User;
 import com.yourssu.application.exceptionhandling.GlobalExceptionHandler;
 import com.yourssu.application.restcontroller.ArticleController;
 import com.yourssu.application.service.AppService;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
@@ -35,6 +39,8 @@ public class ArticleControllerTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private MockMvc mockMvc;
+
+    private Gson gson = new Gson();
 
     @BeforeEach
     public void setup() {
