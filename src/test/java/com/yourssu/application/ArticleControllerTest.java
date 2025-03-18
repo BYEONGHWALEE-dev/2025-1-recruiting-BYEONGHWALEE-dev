@@ -32,15 +32,7 @@ public class ArticleControllerTest {
     @InjectMocks
     private ArticleController articleController;
 
-    @Mock
-    private AppService appService;
-
-    @Mock
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private MockMvc mockMvc;
-
-    private Gson gson = new Gson();
 
     @BeforeEach
     public void setup() {
