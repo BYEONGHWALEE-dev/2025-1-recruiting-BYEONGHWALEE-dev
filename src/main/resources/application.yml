@@ -10,3 +10,18 @@ spring:
   h2:
     console:
       enabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com  # 🔹 Google의 JWT 발급자
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs #Google 공개키
+logging:
+  level:
+    org:
+      springframework:
+        security : DEBUG
+        web : DEBUG
+
+
